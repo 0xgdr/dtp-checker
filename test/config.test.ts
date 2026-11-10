@@ -7,9 +7,15 @@ test("RPC_URL wins, public RPC is the fallback", () => {
   expect(loadConfig({ RPC_RPS: "nope", PORT: "4000" })).toMatchObject({ rpcRps: 8, port: 4000, cacheDir: ".cache" });
 });
 
-test("S3_BUCKET switches the cache to a bucket, under a prefix by default", () => {
-  expect(loadConfig({})).toMatchObject({ cacheBucket: null, cachePrefix: "dtp-history/cache/" });
-  expect(loadConfig({ S3_BUCKET: "stuff", CACHE_PREFIX: "" })).toMatchObject({ cacheBucket: "stuff", cachePrefix: "" });
+test("S3_BUCKET switches the cache to a bucket, under CACHE_PREFIX", () => {
+  expect(loadConfig({}).cacheBucket).toBeNull();
+  expect(loadConfig({ CACHE_PREFIX: "p/" }).cacheBucket).toBeNull();
+  expect(loadConfig({ S3_BUCKET: " stuff ", CACHE_PREFIX: " p/cache/ " }).cacheBucket).toEqual({ name: "stuff", prefix: "p/cache/" });
+});
+
+test("a bucket without CACHE_PREFIX is an error, not a silent default", () => {
+  expect(() => loadConfig({ S3_BUCKET: "stuff" })).toThrow("No cache set up");
+  expect(() => loadConfig({ S3_BUCKET: "stuff", CACHE_PREFIX: "  " })).toThrow("CACHE_PREFIX is empty");
 });
 
 test("redactUrl never shows a key in the query or the path", () => {

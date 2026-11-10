@@ -18,10 +18,9 @@ const onVercel = Boolean(Bun.env.VERCEL);
 const production = Bun.env.NODE_ENV === "production" || onVercel;
 
 // S3Client reads S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY and S3_ENDPOINT from the environment.
-const cache = config.cacheBucket
-  ? s3Cache(new S3Client({ bucket: config.cacheBucket }), config.cachePrefix)
-  : fileCache(config.cacheDir);
-console.log(config.cacheBucket ? `Cache: bucket ${config.cacheBucket}/${config.cachePrefix}` : `Cache: ${config.cacheDir}`);
+const bucket = config.cacheBucket;
+const cache = bucket ? s3Cache(new S3Client({ bucket: bucket.name }), bucket.prefix) : fileCache(config.cacheDir);
+console.log(bucket ? `Cache: bucket ${bucket.name}/${bucket.prefix}` : `Cache: ${config.cacheDir}`);
 
 const api = createApi({
   rpc: createRpc(config.rpcUrl, { rps: config.rpcRps, concurrency: config.rpcConcurrency }),
