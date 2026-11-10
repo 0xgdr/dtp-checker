@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "dtp-history",
+      "name": "dtp-checker",
       "dependencies": {
         "@solana/kit": "^8.5.0",
         "@vercel/functions": "3.10.3",

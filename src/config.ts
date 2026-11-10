@@ -20,7 +20,8 @@ export function loadConfig(env: Record<string, string | undefined> = Bun.env): C
     rpcConcurrency: positiveNumber(env.RPC_CONCURRENCY, 4),
     cacheDir: env.CACHE_DIR?.trim() || ".cache",
     cacheBucket: env.S3_BUCKET?.trim() || null,
-    // Keeps the cache apart from anything else in a shared bucket.
+    // Keeps the cache apart from anything else in a shared bucket. Still the project's old name:
+    // changing it would orphan the cache already in the bucket.
     cachePrefix: env.CACHE_PREFIX?.trim() ?? "dtp-history/cache/",
     port: positiveNumber(env.PORT, 3000),
     // Site origin for share-card URLs. Unset: taken from each request's host.

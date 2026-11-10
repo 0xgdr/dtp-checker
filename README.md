@@ -1,4 +1,4 @@
-# dtp-history
+# dtp-checker
 
 Read-only history and verdict tool for Degenerate Trash Pandas (Solana NFTs). Enter a Panda
 number and it rebuilds that Panda's metadata history from chain and says whether its image or
