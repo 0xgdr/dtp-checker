@@ -31,7 +31,7 @@ request to it as a Vercel Function. `vercel.json` picks Bun 1.4 and sets the bui
 
 ## First deploy
 
-1. **Add New → Project → Import** `0xgdr/dtp-history`. Framework preset: leave what Vercel
+1. **Add New → Project → Import** the `dtp-checker` repo. Framework preset: leave what Vercel
    detects (Bun, from `vercel.json` and `src/server.ts`). Build command comes from `vercel.json`.
 2. **Environment variables** (Production), before the first deploy:
 
@@ -44,6 +44,9 @@ request to it as a Vercel Function. `vercel.json` picks Bun 1.4 and sets the bui
    | `S3_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` |
    | `S3_ACCESS_KEY_ID` | R2 API token (Object Read & Write, this bucket only). Sensitive. |
    | `S3_SECRET_ACCESS_KEY` | Same token. Sensitive. |
+
+   The bucket and the default cache path (`dtp-history/cache/`) keep the project's old name on
+   purpose: renaming them would leave the existing cache behind.
 
 3. **Deploy.** Vercel deploys `main` on every push, and other branches as previews.
 
