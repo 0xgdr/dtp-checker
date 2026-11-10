@@ -40,14 +40,14 @@ request to it as a Vercel Function. `vercel.json` picks Bun 1.4 and sets the bui
    | `RPC_URL` | Helius endpoint including `?api-key=`. Sensitive. |
    | `RPC_RPS` | A bit under your Helius plan's limit, e.g. `8` on free. |
    | `RPC_CONCURRENCY` | `4` on free, `10`+ on paid. |
-   | `S3_BUCKET` | `dtp-history-cache` |
+   | `S3_BUCKET` | Your R2 bucket's name, e.g. `dtp-checker-cache`. Any empty bucket works. |
    | `S3_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` |
    | `S3_ACCESS_KEY_ID` | R2 API token (Object Read & Write, this bucket only). Sensitive. |
    | `S3_SECRET_ACCESS_KEY` | Same token. Sensitive. |
-   | `CACHE_PREFIX` | `dtp-history/cache/`. Required with `S3_BUCKET`: without it the app stops at startup. |
+   | `CACHE_PREFIX` | The cache's path in the bucket, e.g. `dtp-checker/cache/`. Required with `S3_BUCKET`: without it the app stops at startup. |
 
-   The bucket and the cache path keep the project's old name on purpose: renaming them would
-   leave the existing cache behind.
+   Changing either `S3_BUCKET` or `CACHE_PREFIX` later starts a new, empty cache; it fills up again
+   as Pandas are looked up.
 
 3. **Deploy.** Vercel deploys `main` on every push, and other branches as previews.
 
@@ -55,8 +55,8 @@ request to it as a Vercel Function. `vercel.json` picks Bun 1.4 and sets the bui
 
 - `https://<project>.vercel.app/healthz` → `ok`
 - Look up a Panda twice: the second load is instant, and files appear under
-  `dtp-history/cache/` in the bucket.
-- Logs (Project → Logs) show `Cache: bucket dtp-history-cache/dtp-history/cache/`.
+  `CACHE_PREFIX` in the bucket.
+- Logs (Project → Logs) show `Cache: bucket <S3_BUCKET>/<CACHE_PREFIX>`.
 
 ## Custom domain
 
